@@ -60,8 +60,15 @@ namespace DeependCheque.Controllers
                     throw new Exception(errorMesage);
                 }
 
+                var converter = new AmountToWords();
                 var cheque = response.Content.ReadAsAsync<Cheque>().Result;
-                return this.View("Details", cheque);
+
+                var model = new ChequeDetailsViewModel(cheque)
+                {
+                    Pay = converter.ChangeAmountToWords(cheque.Amount)
+                };
+
+                return this.View("Details", model);
             }
         }
     }
